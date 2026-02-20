@@ -7,7 +7,7 @@ export default function Footer() {
         {/* Kolom 1: Brand & Izin */}
         <div className="col-span-1 md:col-span-1">
           <span className="text-2xl font-bold text-white tracking-tight">
-            AL-HARAMAIN <span className="text-amber-500 text-sm block leading-3">TRAVEL UMROH</span>
+            HeavenTrip
           </span>
           <p className="mt-4 text-gray-400 text-sm leading-relaxed">
             Penyelenggara Perjalanan Ibadah Umroh (PPIU) Resmi. Berkhidmat untuk tamu-tamu Allah dengan sepenuh hati.
@@ -43,7 +43,7 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <Mail size={18} className="text-amber-500 shrink-0" />
-              <span>info@alharamain.com</span>
+              <span>info@heaventrip.com</span>
             </li>
           </ul>
         </div>
@@ -62,7 +62,7 @@ export default function Footer() {
       </div>
       
       <div className="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-emerald-900 text-center text-sm text-gray-500">
-        © 2024 Al-Haramain Travel. All Rights Reserved. Built with Next.js.
+        © 2024 HeavenTrip. All Rights Reserved. Built with Next.js.
       </div>
     </footer>
   );
