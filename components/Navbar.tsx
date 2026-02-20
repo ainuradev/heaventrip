@@ -25,6 +25,7 @@ export default function Navbar() {
             <Link href="#paket" className="hover:text-amber-600 transition">Paket Umroh</Link>
             <Link href="#haji" className="hover:text-amber-600 transition">Haji Plus</Link>
             <Link href="#tentang" className="hover:text-amber-600 transition">Tentang Kami</Link>
+            <Link href="#Testimoni" className="hover:text-amber-600 transition">Testimoni</Link>
           </div>
 
           {/* Desktop Social */}

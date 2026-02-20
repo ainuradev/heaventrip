@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import PackageCard from '@/components/PackageCard'; 
 import { umrohPackages } from '@/data/packages';
 import Footer from '@/components/Footer';
+import SectionReveal from '@/components/SectionReveal';
 import FaqItem from '@/components/FaqItem';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Award, Users, BookOpenCheck, CheckCircle, Calendar, ChevronRight, ShieldCheck, Phone, ClipboardCheck, PlaneTakeoff, Building2, MapPinCheck, Star } from 'lucide-react';
 
 export default function Home() {
@@ -106,6 +107,12 @@ export default function Home() {
   ];
 
   const [counts, setCounts] = useState<number[]>(() => counterItems.map(() => 0));
+  const timelineRef = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress: timelineProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 75%", "end 20%"],
+  });
+  const planeY = useTransform(timelineProgress, [0, 1], ["0%", "94%"]);
 
   useEffect(() => {
     const duration = 1400;
@@ -130,7 +137,7 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       <Navbar />
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-emerald-950">
+      <SectionReveal className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-emerald-950">
   {/* Background Image harus absolute fill */}
   <div className="absolute inset-0 z-0">
     <div className="absolute inset-0 bg-gradient-to-r from-emerald-950 via-emerald-950/80 to-transparent z-10" />
@@ -173,9 +180,9 @@ export default function Home() {
 
   </div>
 </div>
-</section>
+</SectionReveal>
 
-      <section id="tentang" className="py-24 bg-white overflow-hidden">
+      <SectionReveal id="tentang" className="py-24 bg-white overflow-hidden">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div className="flex flex-col lg:flex-row items-center gap-16">
       
@@ -251,8 +258,8 @@ export default function Home() {
 
     </div>
   </div>
-</section>
-<section className="relative mt-6 md:-mt-10 z-30 pb-8">
+</SectionReveal>
+<SectionReveal className="relative mt-6 md:-mt-10 z-30 pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl shadow-xl border border-emerald-100 p-6 md:p-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
@@ -268,9 +275,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-            </section>
+            </SectionReveal>
 
-      <section className="pb-20 bg-white">
+      <SectionReveal className="pb-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="overflow-hidden py-4">
             <div className="flex w-max items-center gap-10 partner-marquee">
@@ -286,11 +293,11 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </SectionReveal>
 
 {/* Section Timeline */}
-<section className="py-24 bg-slate-50">
-  <div className="max-w-7xl mx-auto px-4">
+<SectionReveal className="py-24 bg-slate-50">
+  <div ref={timelineRef} className="max-w-7xl mx-auto px-4">
     <div className="text-center mb-16">
       <h2 className="text-amber-600 font-bold uppercase tracking-widest text-sm mb-2">Proses Mudah</h2>
       <h3 className="text-4xl font-extrabold text-emerald-950">5 Langkah Menuju Baitullah</h3>
@@ -298,11 +305,28 @@ export default function Home() {
 
     <div className="relative">
       {/* Garis Tengah (Hanya muncul di Desktop) */}
-      <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-emerald-200" />
+      <div className="hidden md:block absolute left-1/2 -ml-px w-0.5 h-full bg-emerald-200" />
+      <motion.div
+        className="hidden md:block absolute left-1/2 -ml-px w-0.5 h-full origin-top bg-gradient-to-b from-amber-400 via-emerald-500 to-emerald-700"
+        style={{ scaleY: timelineProgress }}
+      />
+      <motion.div
+        className="hidden md:flex absolute left-1/2 top-0 z-20 w-11 h-11 rounded-full border border-emerald-200 bg-white shadow-lg items-center justify-center"
+        style={{ x: "-50%", y: planeY }}
+      >
+        <PlaneTakeoff size={18} className="text-emerald-700" />
+      </motion.div>
       
       <div className="space-y-12">
         {steps.map((step, index) => (
-          <div key={index} className={`flex flex-col md:flex-row items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 26 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.45, delay: index * 0.08 }}
+            className={`flex flex-col md:flex-row items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+          >
             {/* Konten */}
             <div className="md:w-1/2 w-full px-8">
               <div className={`p-6 bg-white rounded-2xl shadow-md border-b-4 border-amber-500 hover:shadow-xl transition-all duration-300 ${index % 2 === 0 ? 'text-left' : 'md:text-right text-left'}`}>
@@ -318,14 +342,14 @@ export default function Home() {
               {index + 1}
             </div>
             <div className="md:w-1/2 w-full" />
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
   </div>
-</section>
+</SectionReveal>
       
-      <section id="paket" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionReveal id="paket" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-amber-600 font-bold uppercase tracking-widest text-sm mb-2">Pilihan Terbaik</h2>
           <h3 className="text-4xl md:text-5xl font-extrabold text-emerald-950">Paket Umroh Terpercaya</h3>
@@ -344,9 +368,9 @@ export default function Home() {
             Pelajari Selengkapnya Hubungi Admin
           </button>
         </div>
-      </section>
+      </SectionReveal>
 
-      <section className="py-24 bg-slate-50">
+      <SectionReveal id="Testimoni" className="py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <h2 className="text-amber-600 font-bold uppercase tracking-widest text-sm mb-2">Testimoni</h2>
@@ -379,9 +403,9 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </SectionReveal>
 
-      <section className="py-24 bg-white">
+      <SectionReveal className="py-24 bg-white">
   <div className="max-w-3xl mx-auto px-4">
     <div className="text-center mb-16">
       <h2 className="text-amber-600 font-bold uppercase tracking-widest text-sm mb-2">Tanya Jawab</h2>
@@ -394,9 +418,9 @@ export default function Home() {
       ))}
     </div>
   </div>
-</section>
+</SectionReveal>
 
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <SectionReveal className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="relative overflow-hidden rounded-3xl">
             <img
@@ -427,7 +451,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </SectionReveal>
 
       {/* Floating WA Button */}
 <a 
@@ -471,6 +495,7 @@ export default function Home() {
     
   ); 
 }
+
 
 
 

@@ -5,7 +5,7 @@ export const umrohPackages = [
     duration: "9 Hari",
     hotel: "Bintang 4",
     price: "28.500.000",
-    image: "https://images.unsplash.com/photo-1565552136439-b2f1af71ce7d?q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1693590614566-1d3ea9ef32f7?",
     isPopular: false,
     date: "15 Mei 2024"
   },
